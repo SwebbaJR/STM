@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+test_code\:Debug/build=Debug
+test_code\:Debug/cmake_build_type=Debug
+test_code\:Debug/cmake_export_compile_commands=
+test_code\:Debug/cmake_toolchain_file=cubeide-gcc.cmake
+test_code\:Debug/generator=Unix Makefiles
+test_code\:Debug/misc_command=
+test_code\:Debug/src=.
