@@ -27,6 +27,7 @@ set(CORE_C_FILES
     ${CORE_PATH}/freertos.c
     ${CORE_PATH}/main.c
     ${CORE_PATH}/stm32f1xx_hal_msp.c
+    ${CORE_PATH}/stm32f1xx_hal_timebase_tim.c
     ${CORE_PATH}/stm32f1xx_it.c
     ${CORE_PATH}/syscalls.c
     ${CORE_PATH}/sysmem.c
@@ -45,6 +46,8 @@ set(DRIVERS_C_FILES
     ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal_pwr.c
     ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal_rcc_ex.c
     ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal_rcc.c
+    ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal_tim_ex.c
+    ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal_tim.c
     ${DRIVERS_SMT32F1_PATH}/stm32f1xx_hal.c)
 
 # FreeRTOS files
