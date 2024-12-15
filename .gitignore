@@ -4,6 +4,8 @@
 
 # Generated repository files
 STMF103RBT6/build/
+STMF103RBT6/.settings/
+STMF103RBT6/Debug/
 
 # File types
 *.log
