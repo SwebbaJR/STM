@@ -7,6 +7,8 @@ STMF103RBT6/build/
 STMF103RBT6/.settings/
 STMF103RBT6/Debug/
 
+build/
+
 # File types
 *.log
 *.ini
