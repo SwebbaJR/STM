@@ -2,7 +2,6 @@
 #define MESSAGE_SYSTEM__MESSAGE_DISTRIBUTOR_HPP
 
 #include <memory>
-#include <unordered_map>
 #include <vector>
 #include <functional>
 #include <iostream>
@@ -16,8 +15,8 @@ public:
     ~MessageDistributer();
 
 private:
-    std::unordered_map<Topics, std::vector<std::shared_ptr<std::function<void(const BaseMsg&)>>>> subscriber_callbacks_map;
-    std::unordered_map<Service, std::shared_ptr<std::function<void(const BaseService::Request&, BaseService::Response&)>>> server_callbacks_map;
+    std::array<std::vector<std::shared_ptr<std::function<void(const BaseMsg&)>>>, static_cast<std::size_t>(Topics::NUMBER_OF_TOPICS)> subscriber_callbacks_map;
+    std::array<std::shared_ptr<std::function<void(const BaseService::Request&, BaseService::Response&)>>, static_cast<std::size_t>(Service::NUMBER_OF_SERVICES)> server_callbacks_map;
 
     template<typename MsgType>
     friend class Publisher;
