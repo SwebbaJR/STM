@@ -1,6 +1,8 @@
 #ifndef MESSAGE_SYSTEM__MESSAGE_DISTRIBUTOR_PRIMS_HPP
 #define MESSAGE_SYSTEM__MESSAGE_DISTRIBUTOR_PRIMS_HPP
 
+#include <cstddef>
+
 enum class Topics : std::size_t
 {
     TOPIC_A = 0,
