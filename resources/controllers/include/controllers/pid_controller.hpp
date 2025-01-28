@@ -23,13 +23,15 @@ public:
     ~PIDController();
 
     float update(const float& reference, const float& measurement, const float& deltaT);
+    void feedback_saturation(const float& saturated_output);
     void set_controller_parameters(const ControllerParameters& controller_parameters);
     void set_min_max_limits(const float& min_limit, const float& max_limit);
 private:
-    float anti_windup(const float& saturated_output, const float& proportional_output, const float& derivative_output);
+    float anti_windup(const float unsaturated_output, const float& saturated_output);
     float saturate_output(const float& output);
 
     ControllerParameters controller_parameters;
+    float previous_output{0.0};
     float integral_error{0.0};
     float previous_error{0.0};
     float previous_derivative{0.0};

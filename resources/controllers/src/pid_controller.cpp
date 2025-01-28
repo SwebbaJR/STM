@@ -23,10 +23,7 @@ float PIDController::update(const float& reference, const float& measurement, co
     float filtered_derivative = derivative_filter->update(derivative, deltaT);
 
     // Compute controller compontents
-    float proportional_output = controller_parameters.Kp*error;
-    float integral_output = controller_parameters.Ki*integral_error;
-    float derivative_output = controller_parameters.Kd*filtered_derivative;
-    float unsaturated_output = proportional_output + integral_output + derivative_output;
+    float unsaturated_output = controller_parameters.Kp*error + controller_parameters.Ki*integral_error + controller_parameters.Kd*filtered_derivative;
 
     // Saturate output
     float saturated_output = saturate_output(unsaturated_output);
@@ -34,7 +31,7 @@ float PIDController::update(const float& reference, const float& measurement, co
     // Anti-windup: Adjust integral term if output is saturated
     if (saturated_output != unsaturated_output)
     {
-        integral_error = anti_windup(saturated_output, proportional_output, derivative_output);
+        integral_error = anti_windup(unsaturated_output, saturated_output);
     }
 
     // Update parameters
@@ -42,6 +39,11 @@ float PIDController::update(const float& reference, const float& measurement, co
     previous_derivative = derivative;
 
     return saturated_output;
+}
+
+void PIDController::feedback_saturation(const float& saturated_output)
+{
+    integral_error = anti_windup(previous_output, saturated_output);
 }
 
 float PIDController::saturate_output(const float& unsaturated_output)
@@ -57,13 +59,13 @@ float PIDController::saturate_output(const float& unsaturated_output)
     return unsaturated_output;
 }
 
-float PIDController::anti_windup(const float& saturated_output, const float& proportional_output, const float& derivative_output)
+float PIDController::anti_windup(const float unsaturated_output, const float& saturated_output)
 {   
     if (controller_parameters.Ki == 0.0)
     {
         return 0.0;
     }
-    return (saturated_output - proportional_output - derivative_output)/controller_parameters.Ki;
+    return (integral_error*controller_parameters.Ki - unsaturated_output + saturated_output)/controller_parameters.Ki;
 }
 
 void PIDController::set_controller_parameters(const ControllerParameters& new_controller_parameters)
