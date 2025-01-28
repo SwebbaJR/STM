@@ -17,3 +17,15 @@ set(EXECUTABLE_NAME "foc_current_controller")
 add_library(${EXECUTABLE_NAME} ${CPP_FILES})
 
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+
+set(DEPENDENCIES 
+    controllers
+    voltage_modulators
+)
+
+foreach(DEPENDENCY ${DEPENDENCIES})
+    add_subdirectory(../${DEPENDENCY} ${CMAKE_BINARY_DIR}/${DEPENDENCY})
+    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
+    target_include_directories(${EXECUTABLE_NAME} INTERFACE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY})
+endforeach()

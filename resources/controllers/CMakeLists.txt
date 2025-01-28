@@ -25,5 +25,6 @@ set(DEPENDENCIES
 foreach(DEPENDENCY ${DEPENDENCIES})
     add_subdirectory(../${DEPENDENCY} ${CMAKE_BINARY_DIR}/${DEPENDENCY})
     target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
+    target_include_directories(${EXECUTABLE_NAME} INTERFACE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
     target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY})
 endforeach()

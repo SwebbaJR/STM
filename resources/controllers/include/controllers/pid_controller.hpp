@@ -22,12 +22,12 @@ public:
     explicit PIDController(ControllerParameters controller_parameters);
     ~PIDController();
 
-    float update(const float reference, const float measurement, const float deltaT);
-    void set_controller_parameters(ControllerParameters controller_parameters);
-    void set_min_max_limits(float min_limit, float max_limit);
+    float update(const float& reference, const float& measurement, const float& deltaT);
+    void set_controller_parameters(const ControllerParameters& controller_parameters);
+    void set_min_max_limits(const float& min_limit, const float& max_limit);
 private:
-    float anti_windup(const float saturated_output, const float proportional_output, const float derivative_output);
-    float saturate_output(const float output);
+    float anti_windup(const float& saturated_output, const float& proportional_output, const float& derivative_output);
+    float saturate_output(const float& output);
 
     ControllerParameters controller_parameters;
     float integral_error{0.0};
