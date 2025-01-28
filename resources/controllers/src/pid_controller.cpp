@@ -37,6 +37,7 @@ float PIDController::update(const float reference, const float measurement, cons
         integral_error = anti_windup(saturated_output, proportional_output, derivative_output);
     }
 
+    // Update parameters
     previous_error = error;
     previous_derivative = derivative;
 
@@ -45,15 +46,33 @@ float PIDController::update(const float reference, const float measurement, cons
 
 float PIDController::saturate_output(const float unsaturated_output)
 {
-    return std::max(controller_parameters.min_limit, std::min(unsaturated_output, controller_parameters.max_limit));
+    if (unsaturated_output > controller_parameters.max_limit)
+    {
+        return controller_parameters.max_limit;
+    }
+    else if (unsaturated_output < controller_parameters.min_limit)
+    {
+        return controller_parameters.min_limit;
+    }
+    return unsaturated_output;
 }
 
 float PIDController::anti_windup(const float saturated_output, const float proportional_output, const float derivative_output)
-{
+{   
+    if (controller_parameters.Ki == 0.0)
+    {
+        return 0.0;
+    }
     return (saturated_output - proportional_output - derivative_output)/controller_parameters.Ki;
 }
 
 void PIDController::set_controller_parameters(ControllerParameters new_controller_parameters)
 {
     controller_parameters = new_controller_parameters;
+}
+
+void PIDController::set_min_max_limits(float min_limit, float max_limit)
+{
+    controller_parameters.min_limit = min_limit;
+    controller_parameters.max_limit = max_limit;
 }

@@ -24,6 +24,7 @@ public:
 
     float update(const float reference, const float measurement, const float deltaT);
     void set_controller_parameters(ControllerParameters controller_parameters);
+    void set_min_max_limits(float min_limit, float max_limit);
 private:
     float anti_windup(const float saturated_output, const float proportional_output, const float derivative_output);
     float saturate_output(const float output);
