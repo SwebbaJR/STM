@@ -10,6 +10,7 @@ namespace FocDefinitions
     {
         PIDController::ControllerParameters d_current_controller_parameters;
         PIDController::ControllerParameters q_current_controller_parameters;
+        float max_curent_reference;
     };
 
     struct FocData
@@ -20,6 +21,15 @@ namespace FocDefinitions
         float rotor_angle;
         float angular_velocity;
         float dc_link_voltage;
+    };
+
+    struct MotorParameters
+    {
+        size_t n_pole_pairs;
+        float pm_flux_linkage;
+        float Ld;
+        float Lq;
+        float Rs;
     };
 }
 
