@@ -1,0 +1,29 @@
+U(s) = Kp*E(s) + Ki*E_i(s) + Kd*E_d(s)
+
+E_i(s) = 1/s*E(s)
+
+Integral state:
+
+E(s) = s*E_i(s)
+
+E(z) = 2/T*(1-z^-1)/(1 + z^-1)*E_i(z)
+
+(1 + z^-1)*E(z) = 2/T*(1-z^-1)*E_i(z)
+
+T/2*(1 + z^-1)*E(z) = (1 - z^-1)*E_i(z)
+
+E_i(z) - z^-1*E_i(z) = T/2*(1 + z^-1)*E(z)
+
+e_i(n) = T/2*(e(n) + e(n-1)) + e_i(n-1)
+
+Derivative state:
+
+E_d(s) = s*E(s)
+
+E_d(s) = 2/T*(1-z^-1)/(1 + z^-1)*E(s)
+
+(1 + z^-1)*E_d(s) = 2/T*(1-z^-1)*E(s)
+
+E_d(z) = 2/T*(1-z^-1)*E(z) - z^-1*E_d(z)
+
+e_d(n) = 2/T*(e(n) - e(n-1)) - e_d(n-1) 

@@ -1,4 +1,6 @@
-/*
+/* // TODO: Convert service call to async request so that different nodes can be threaded. Add nodes to seperate thread
+// Use std::future to create async request
+// Also make send request have a callback and not that the node is created with a callback
 #include "node_system/node.hpp"
 
 struct MessageA : BaseMsg

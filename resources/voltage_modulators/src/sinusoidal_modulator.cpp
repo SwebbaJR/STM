@@ -1,0 +1,1 @@
+#include "voltage_modulators/sinusoidal_modulator.hpp"
