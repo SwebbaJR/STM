@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 
-project(STMTF103RBT6 LANGUAGES C CXX)
+project(Nucleo_F103RBT6 LANGUAGES C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -71,7 +71,7 @@ set(EXEUTABLE_C_FILES_LIST)
 list(APPEND EXEUTABLE_C_FILES_LIST ${CORE_C_FILES} ${DRIVERS_C_FILES} ${FREERTOS_C_FILES})
 
 # Add executable(s)
-set(EXECUTABLE_C_FILES_NAME "STMF103RBT6")
+set(EXECUTABLE_C_FILES_NAME "Nucleo_F103RBT6")
 add_executable(${EXECUTABLE_C_FILES_NAME} ${EXEUTABLE_C_FILES_LIST})
 
 # Link include files
@@ -104,6 +104,6 @@ add_custom_command(TARGET ${EXECUTABLE_C_FILES_NAME} POST_BUILD
 
 add_custom_target(flash_stm
     COMMAND openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program ${CMAKE_BINARY_DIR}/${EXECUTABLE_C_FILES_NAME}.bin 0x08000000 verify reset exit"
-    COMMENT "Flashing STM32F103RBT6 using OpenOCD"
+    COMMENT "Flashing Nucleo_F103RBT6 using OpenOCD"
     DEPENDS ${EXECUTABLE_C_FILES_NAME}  # Ensure flashing happens after the executable is built
 )
