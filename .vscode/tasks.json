@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build_and_flash",
+            "options": {
+                "cwd": "${workspaceFolder}/Nucleo_F103RBT6"
+            },
+            "type": "shell",
+            "command": "${workspaceFolder}/Nucleo_F103RBT6/build_and_flash.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Firmware",
+            "options": {
+                "cwd": "${workspaceFolder}/Nucleo_F103RBT6"
+            },
+            "type": "shell",
+            "command": "${workspaceFolder}/Nucleo_F103RBT6/build_project.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

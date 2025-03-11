@@ -1,11 +1,14 @@
 # VSCode
 .metadata/*
-.vscode
+.vscode/settings.json
+.vscode/c_cpp_properties.json
+.vscode/extensions.json
+
 
 # Generated repository files
-STMF103RBT6/build/
-STMF103RBT6/.settings/
-STMF103RBT6/Debug/
+Nucleo_F103RBT6/build/
+Nucleo_F103RBT6/.settings/
+Nucleo_F103RBT6/Debug/
 
 build/
 
