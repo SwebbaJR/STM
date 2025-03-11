@@ -1,6 +1,9 @@
 # VSCode
 .metadata/*
-.vscode
+.vscode/settings.json
+.vscode/c_cpp_properties.json
+.vscode/extensions.json
+
 
 # Generated repository files
 Nucleo_F103RBT6/build/

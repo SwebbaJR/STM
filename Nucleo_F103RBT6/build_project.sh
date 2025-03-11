@@ -2,8 +2,5 @@ rm -r build
 
 mkdir build
 cd build
-cmake ..
-cmake --build .
-
-# Flash stm using command:
-# make flash_stm
+cmake -DCMAKE_TOOLCHAIN_FILE=toolchain-arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=Debug .. 
+cmake --build . -- -j 14

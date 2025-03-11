@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Nucleo-F103RB",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceRoot}/Nucleo_F103RBT6/build/Nucleo_F103RBT6.elf",
+            "device": "STM32F103RB",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32f1x.cfg"
+            ],
+            //"svdFile": "${workspaceRoot}/STM32F103.svd",
+            "preLaunchTask": "Build Firmware",
+            "runToEntryPoint": "main",
+            "postLaunchCommands": [
+                "monitor reset halt",
+                "load",
+                "monitor reset init"
+            ],
+            "openOCDLaunchCommands": [
+                "reset_config srst_only srst_nogate connect_assert_srst"
+            ],
+            "armToolchainPath": "/usr/bin/",
+            "gdbPath": "/usr/bin/gdb-multiarch"
+        }
+    ]
+}

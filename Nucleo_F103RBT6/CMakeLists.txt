@@ -2,14 +2,11 @@ cmake_minimum_required(VERSION 3.17)
 
 project(Nucleo_F103RBT6 LANGUAGES C CXX ASM)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(DEPENDENCIES 
+    #observers
+)
 
-set(CMAKE_C_COMPILER /usr/bin/arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER /usr/bin/arm-none-eabi-g++)
-set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
+#find_package(Eigen3 3.3 REQUIRED)
 
 ## Set include directories
 set(INCLUDE_DIRECTORIES
@@ -67,51 +64,65 @@ set(FREERTOS_C_FILES
     ${FREERTOS_PATH}/tasks.c
     ${FREERTOS_PATH}/timers.c)
 
-# Gather files
+# Gather C files
 set(EXECUTABLE_C_FILES_LIST)
 list(APPEND EXECUTABLE_C_FILES_LIST ${CORE_C_FILES} ${DRIVERS_C_FILES} ${FREERTOS_C_FILES})
 
+set(CPP_FILES
+    )
+
+# Gather cpp files
+set(EXECUTABLE_CPP_FILES_LIST)
+list(APPEND EXECUTABLE_CPP_FILES_LIST ${CPP_FILES})
+
 # Add executable(s)
-set(EXECUTABLE_C_FILES_NAME "Nucleo_F103RBT6")
-add_executable(${EXECUTABLE_C_FILES_NAME} ${EXECUTABLE_C_FILES_LIST})
+set(EXECUTABLE_NAME "Nucleo_F103RBT6")
+add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_C_FILES_LIST} ${EXECUTABLE_CPP_FILES_LIST})
 
 # Link include files
-target_include_directories(${EXECUTABLE_C_FILES_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+
+# Link packages
+#target_link_libraries(${EXECUTABLE_NAME} PRIVATE Eigen3::Eigen)
 
 # Define the target STM32F1xx device in your project
-target_compile_definitions(${EXECUTABLE_C_FILES_NAME} PRIVATE STM32F103xB)
+target_compile_definitions(${EXECUTABLE_NAME} PRIVATE STM32F103xB)
 
 # Set startup file
 set(STARTUP_FILE ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32f103rbtx.s)
-target_sources(${EXECUTABLE_C_FILES_NAME} PRIVATE ${STARTUP_FILE})
+target_sources(${EXECUTABLE_NAME} PRIVATE ${STARTUP_FILE})
 
-# Apply linker flags to the executable
+foreach(DEPENDENCY ${DEPENDENCIES})
+    set (DEPENDENCY_PATH ${CMAKE_SOURCE_DIR}/../resources/${DEPENDENCY})
+    add_subdirectory(${DEPENDENCY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${DEPENDENCY})
+    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY_PATH}/include)
+    target_include_directories(${EXECUTABLE_NAME} INTERFACE ${DEPENDENCY_PATH}/include)
+    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY})
+endforeach()
+
+# Set executable properties
 set (CMAKE_EXECUTABLE_SUFFIX ".elf")
-set (RUNTIME_LIBRARY          "--specs=nano.specs")
-set (RUNTIME_LIBRARY_SYSCALLS "--specs=nosys.specs")
-set(CMAKE_C_FLAGS "-std=gnu11 ${RUNTIME_LIBRARY} -mcpu=Cortex-M3 -mthumb -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=gnu11 ${RUNTIME_LIBRARY} -mcpu=Cortex-M3 -mthumb -Wall -Werror")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103RBTX_FLASH.ld)
-target_link_options(${EXECUTABLE_C_FILES_NAME} PRIVATE -T ${LINKER_SCRIPT})
+target_link_options(${EXECUTABLE_NAME} PRIVATE -T ${LINKER_SCRIPT})
 
 # Add custom command to convert ELF to BIN
-add_custom_command(TARGET ${EXECUTABLE_C_FILES_NAME} POST_BUILD
+add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
     COMMAND arm-none-eabi-objcopy -O binary 
-   ${CMAKE_BINARY_DIR}/${EXECUTABLE_C_FILES_NAME}.elf 
-   ${CMAKE_BINARY_DIR}/${EXECUTABLE_C_FILES_NAME}.bin
+   ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME}.elf 
+   ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME}.bin
     COMMENT "Converting ELF to BIN"
     VERBATIM
 )
 
 add_custom_target(flash_stm_with_bin
-    COMMAND openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program ${CMAKE_BINARY_DIR}/${EXECUTABLE_C_FILES_NAME}.bin 0x08000000 verify reset exit"
+    COMMAND openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME}.bin 0x08000000 verify reset exit"
     COMMENT "Flashing Nucleo_F103RBT6 using OpenOCD"
-    DEPENDS ${EXECUTABLE_C_FILES_NAME}  # Ensure flashing happens after the executable is built
+    DEPENDS ${EXECUTABLE_NAME}  # Ensure flashing happens after the executable is built
 )
 
 add_custom_target(flash_stm_with_elf
-    COMMAND openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program ${CMAKE_BINARY_DIR}/${EXECUTABLE_C_FILES_NAME}.elf verify reset exit"
+    COMMAND openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program ${CMAKE_BINARY_DIR}/${EXECUTABLE_NAME}.elf verify reset exit"
     COMMENT "Flashing Nucleo_F103RBT6 using OpenOCD"
-    DEPENDS ${EXECUTABLE_C_FILES_NAME}  # Ensure flashing happens after the executable is built
+    DEPENDS ${EXECUTABLE_NAME}  # Ensure flashing happens after the executable is built
 )
