@@ -3,6 +3,12 @@
 
 #include <Eigen/Dense>
 
+/** @brief
+ * Template class for an Extended Kalman Filter
+ * Filter includes the generic predict and update functions
+ * The user must implement the state transition jacobian and state prediction functions
+ * Additonally each measurement update function is defined outside of the class
+ */
 template<size_t N_STATES>
 class ExtendedKalmanFilter
 {
