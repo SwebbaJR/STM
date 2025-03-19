@@ -16,17 +16,17 @@ find_package(Eigen3 3.3 REQUIRED)
 #add_executable(${EXECUTABLE_NAME} ${CPP_FILES})
 add_library(${EXECUTABLE_NAME} STATIC ${CPP_FILES})
 
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+target_include_directories(${EXECUTABLE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
 # Link packages
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE Eigen3::Eigen)
+target_link_libraries(${EXECUTABLE_NAME} PUBLIC Eigen3::Eigen)
 
 set(DEPENDENCIES 
 )
 
 foreach(DEPENDENCY ${DEPENDENCIES})
-    add_subdirectory(../${DEPENDENCY} ${CMAKE_BINARY_DIR}/${DEPENDENCY})
-    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
-    target_include_directories(${EXECUTABLE_NAME} INTERFACE ${CMAKE_SOURCE_DIR}/../${DEPENDENCY}/include)
-    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY})
+    if (NOT TARGET ${DEPENDENCY})
+        add_subdirectory(../${DEPENDENCY} ${CMAKE_BINARY_DIR}/${DEPENDENCY})
+    endif()
+    target_link_libraries(${EXECUTABLE_NAME} PUBLIC ${DEPENDENCY})
 endforeach()
