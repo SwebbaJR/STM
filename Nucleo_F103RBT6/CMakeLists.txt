@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.17)
 project(Nucleo_F103RBT6 LANGUAGES C CXX ASM)
 
 set(DEPENDENCIES 
-    #observers
 )
 
 #find_package(Eigen3 3.3 REQUIRED)
