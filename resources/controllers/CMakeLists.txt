@@ -20,7 +20,6 @@ target_include_directories(${EXECUTABLE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
 set(DEPENDENCIES 
     filters
-    observers
 )
 
 foreach(DEPENDENCY ${DEPENDENCIES})
