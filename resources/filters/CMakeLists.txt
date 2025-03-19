@@ -14,5 +14,5 @@ set(EXECUTABLE_NAME "filters")
 #add_executable(${EXECUTABLE_NAME} ${CPP_FILES})
 add_library(${EXECUTABLE_NAME} ${CPP_FILES})
 
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+target_include_directories(${EXECUTABLE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 

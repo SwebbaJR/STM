@@ -80,10 +80,9 @@ set(EXECUTABLE_NAME "Nucleo_F103RBT6")
 add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_C_FILES_LIST} ${EXECUTABLE_CPP_FILES_LIST})
 
 # Link include files
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
+target_include_directories(${EXECUTABLE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
 # Link packages
-#target_link_libraries(${EXECUTABLE_NAME} PRIVATE Eigen3::Eigen)
 
 # Define the target STM32F1xx device in your project
 target_compile_definitions(${EXECUTABLE_NAME} PRIVATE STM32F103xB)
@@ -93,11 +92,11 @@ set(STARTUP_FILE ${CMAKE_SOURCE_DIR}/Core/Startup/startup_stm32f103rbtx.s)
 target_sources(${EXECUTABLE_NAME} PRIVATE ${STARTUP_FILE})
 
 foreach(DEPENDENCY ${DEPENDENCIES})
-    set (DEPENDENCY_PATH ${CMAKE_SOURCE_DIR}/../resources/${DEPENDENCY})
-    add_subdirectory(${DEPENDENCY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${DEPENDENCY})
-    target_include_directories(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY_PATH}/include)
-    target_include_directories(${EXECUTABLE_NAME} INTERFACE ${DEPENDENCY_PATH}/include)
-    target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${DEPENDENCY})
+    set(DEPENDENCY_PATH ${CMAKE_SOURCE_DIR}/../resources/${DEPENDENCY})
+    if (NOT TARGET ${DEPENDENCY})
+        add_subdirectory(${DEPENDENCY_PATH} ${CMAKE_BINARY_DIR}/${DEPENDENCY})
+    endif()
+    target_link_libraries(${EXECUTABLE_NAME} PUBLIC ${DEPENDENCY})
 endforeach()
 
 # Set executable properties
