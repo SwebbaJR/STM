@@ -33,7 +33,8 @@ public:
     TestOberserver()
             : ExtendedKalmanFilter<TEST_N_STATES>(Eigen::Matrix<float, TEST_N_STATES, 1>::Zero(),
                                     Eigen::Matrix<float, TEST_N_STATES, TEST_N_STATES>::Identity(),
-                                    Eigen::Matrix<float, TEST_N_STATES, TEST_N_STATES>::Identity())
+                                    Eigen::Matrix<float, TEST_N_STATES, TEST_N_STATES>::Identity()),
+            H_position(Eigen::Matrix<float, ObservationSizes::POSITION, TEST_N_STATES>::Zero())
     {
     };
 
