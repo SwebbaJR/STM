@@ -13,10 +13,15 @@ set(INCLUDE_DIRECTORIES include)
 file(GLOB_RECURSE CPP_FILES "src/*.cpp")
 set(EXECUTABLE_NAME "controllers")
 
+find_package(Eigen3 3.3 REQUIRED)
+
 #add_executable(${EXECUTABLE_NAME} ${CPP_FILES})
 add_library(${EXECUTABLE_NAME} ${CPP_FILES})
 
 target_include_directories(${EXECUTABLE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
+
+# Link packages
+target_link_libraries(${EXECUTABLE_NAME} PUBLIC Eigen3::Eigen)
 
 set(DEPENDENCIES 
     filters
